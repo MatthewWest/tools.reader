@@ -186,39 +186,18 @@ with invalid arguments."
 ;;; ------------------------------------------------------------------------
 ;;; reader integration
 
-(defn- construct-calendar
-  "Construct a java.util.Calendar, preserving the timezone
-offset, but truncating the subsecond fraction to milliseconds."
-  ^GregorianCalendar
-  [years months days hours minutes seconds nanoseconds
-   offset-sign offset-hours offset-minutes]
-  (doto (GregorianCalendar. years (dec months) days hours minutes seconds)
-    (.set Calendar/MILLISECOND (quot nanoseconds 1000000))
-    (.setTimeZone (TimeZone/getTimeZone
-                   (format "GMT%s%02d:%02d"
-                           (if (neg? offset-sign) "-" "+")
-                           offset-hours offset-minutes)))))
-
 (defn- construct-date
   "Construct a java.util.Date, which expresses the original instant as
 milliseconds since the epoch, UTC."
   [years months days hours minutes seconds nanoseconds
    offset-sign offset-hours offset-minutes]
-  (.getTime (construct-calendar years months days
-                                hours minutes seconds nanoseconds
-                                offset-sign offset-hours offset-minutes)))
-
-(defn- construct-timestamp
-  "Construct a java.sql.Timestamp, which has nanosecond precision."
-  [years months days hours minutes seconds nanoseconds
-   offset-sign offset-hours offset-minutes]
-  (doto (Timestamp.
-         (.getTimeInMillis
-          (construct-calendar years months days
-                              hours minutes seconds 0
-                              offset-sign offset-hours offset-minutes)))
-    ;; nanos must be set separately, pass 0 above for the base calendar
-    (.setNanos nanoseconds)))
+  (doto (js/Date.)
+    (.setUTCFullYear years)
+    (.setUTCMonth months)
+    (.setUTCDate days)
+    (.setUTCHours (+ hours (* offset-sign offset-hours)))
+    (.setUTCMinutes (+ minutes (* offset-sign offset-minutes)))
+    (.setUTCSeconds seconds)))
 
 (def read-instant-date
   "To read an instant as a java.util.Date, bind *data-readers* to a map with
