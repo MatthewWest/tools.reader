@@ -205,19 +205,6 @@ this var as the value for the 'inst key. The timezone offset will be used
 to convert into UTC."
   (partial parse-timestamp (validated construct-date)))
 
-(def read-instant-calendar
-  "To read an instant as a java.util.Calendar, bind *data-readers* to a map with
-this var as the value for the 'inst key.  Calendar preserves the timezone
-offset."
-  (partial parse-timestamp (validated construct-calendar)))
-
-(def read-instant-timestamp
-  "To read an instant as a java.sql.Timestamp, bind *data-readers* to a
-map with this var as the value for the 'inst key. Timestamp preserves
-fractional seconds with nanosecond precision. The timezone offset will
-be used to convert into UTC."
-  (partial parse-timestamp (validated construct-timestamp)))
-
 ;;; clojure.uuid ;;;
 
 (defn default-uuid-reader [form]
