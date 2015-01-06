@@ -6,7 +6,7 @@
 ;;   the terms of this license.
 ;;   You must not remove this notice, or any other, from this software.
 
-(ns ^:skip-wiki clojure.tools.reader.impl.utils
+(ns ^:skip-wiki cljs.tools.reader.impl.utils
   (:refer-clojure :exclude [char])
   (:require [goog.string :as gstring]))
 
