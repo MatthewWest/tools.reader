@@ -7,8 +7,7 @@
 ;;   You must not remove this notice, or any other, from this software.
 
 (ns ^:skip-wiki clojure.tools.reader.impl.utils
-  (:require clojure.tools.reader.impl.ExceptionInfo) ;; force loading
-  (:refer-clojure :exclude [char]))
+  (:require [goog.string :as gstring]))
 
 (defn char [x]
   (when x
@@ -47,15 +46,12 @@
 (defn whitespace?
   "Checks whether a given character is whitespace"
   [ch]
-  (when ch
-    (or (Character/isWhitespace ^Character ch)
-        (identical? \,  ch))))
+  (or (gstring/isBreakingWhitespace ch) (identical? \, ch)))
 
 (defn numeric?
   "Checks whether a given character is numeric"
-  [^Character ch]
-  (when ch
-    (Character/isDigit ch)))
+  [ch]
+  (gstring/isNumeric ch))
 
 (defn newline?
   "Checks whether the character is a newline"
