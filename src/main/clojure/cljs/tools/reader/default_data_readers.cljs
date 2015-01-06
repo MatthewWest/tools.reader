@@ -16,13 +16,13 @@
 ;;; ------------------------------------------------------------------------
 ;;; convenience macros
 
-(defmacro ^:private fail
+(defn- fail
   [msg]
-  `(throw (RuntimeException. ~msg)))
+  (throw (js/Error. msg)))
 
-(defmacro ^:private verify
-  ([test msg] `(when-not ~test (fail ~msg)))
-  ([test] `(verify ~test ~(str "failed: " (pr-str test)))))
+(defn- verify
+  ([test msg] (when-not test (fail msg)))
+  ([test] (verify test (str "failed: " (pr-str test)))))
 
 (defn- divisible?
   [num div]
