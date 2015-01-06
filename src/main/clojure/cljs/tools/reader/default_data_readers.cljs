@@ -8,9 +8,8 @@
 
 ;;; copied from clojure.instant and clojure.uuid ;;;
 
-(ns ^:skip-wiki clojure.tools.reader.default-data-readers
-  (:import [java.util Calendar Date GregorianCalendar TimeZone]
-           [java.sql Timestamp]))
+(ns ^:skip-wiki cljs.tools.reader.default-data-readers
+  (:import goog.string.StringBuffer))
 
 ;;; clojure.instant ;;;
 
