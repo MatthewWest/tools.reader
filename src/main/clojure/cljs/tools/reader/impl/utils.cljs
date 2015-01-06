@@ -15,34 +15,7 @@
     (clojure.core/char x)))
 
 ;; getColumnNumber and *default-data-reader-fn* are available only since clojure-1.5.0-beta1
-(def >=clojure-1-5-alpha*?
-  (let [{:keys [minor qualifier]} *clojure-version*]
-    (or (and (= minor 5)
-             (not= "alpha"
-                   (when qualifier
-                     (subs qualifier 0 (dec (count qualifier))))))
-        (> minor 5))))
-
-(defmacro compile-if [cond then else]
-  (if (eval cond)
-    then
-    else))
-
-(compile-if (= 3 (:minor *clojure-version*))
-  (do
-    (defn ex-info
-      ([msg map]
-         (clojure.tools.reader.impl.ExceptionInfo. msg map))
-      ([msg map cause]
-         (clojure.tools.reader.impl.ExceptionInfo. msg map cause)))
-    (defn ex-data
-      [^clojure.tools.reader.impl.ExceptionInfo ex]
-      (.getData ex))
-    (defn ex-info? [ex]
-      (instance? clojure.tools.reader.impl.ExceptionInfo ex)))
-
-  (defn ex-info? [ex]
-    (instance? clojure.lang.ExceptionInfo ex)))
+(def >=clojure-1-5-alpha*? true)
 
 (defn whitespace?
   "Checks whether a given character is whitespace"
