@@ -37,12 +37,12 @@
 ;;; parser implementation
 
 (defn- parse-int [^String s]
-  (Long/parseLong s))
+  (js/parseInt s))
 
 (defn- zero-fill-right [^String s width]
   (cond (= width (count s)) s
         (< width (count s)) (.substring s 0 width)
-        :else (loop [b (StringBuilder. s)]
+        :else (loop [b (goog.string.StringBuffer. s)]
                 (if (< (.length b) width)
                   (recur (.append b \0))
                   (.toString b)))))
