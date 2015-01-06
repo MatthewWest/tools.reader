@@ -207,12 +207,7 @@ to convert into UTC."
 
 ;;; clojure.uuid ;;;
 
-(defn default-uuid-reader [form]
-  {:pre [(string? form)]}
-  (java.util.UUID/fromString form))
-
-(defmethod print-method java.util.UUID [uuid ^java.io.Writer w]
-  (.write w (str "#uuid \"" (str uuid) "\"")))
-
-(defmethod print-dup java.util.UUID [o w]
-  (print-method o w))
+(defn default-uuid-reader [uuid]
+  (if (string? uuid)
+    (cljs.core.UUID. uuid)
+    (throw (js/Error. "UUID literal expects a string as its representation."))))
