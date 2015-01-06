@@ -67,7 +67,8 @@
     (string? f)  {:tag f}
     :else        f))
 
+;; not 100% sure about this -nasser
 (defn make-var
   "Returns an anonymous unbound Var"
   []
-  (with-local-vars [x nil] x))
+  (cljs.core.Var. nil (gensym) {}))
