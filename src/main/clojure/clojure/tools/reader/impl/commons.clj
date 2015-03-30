@@ -95,7 +95,9 @@
             (when (.matches ratio-matcher)
               (match-ratio ratio-matcher))))))))
 
-(defn parse-symbol [^String token]
+(defn parse-symbol
+  "Parses a string into a vector of the namespace and symbol"
+  [^String token]
   (when-not (or (= "" token)
                 (not= -1 (.indexOf token "::")))
     (let [ns-idx (.indexOf token "/")]
@@ -118,15 +120,18 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn read-comment
+  "Return a reader after skipping a line"
   [rdr & _]
   (skip-line rdr))
 
 (defn throwing-reader
+  "Close around a message argument to get a reader throwing an exception"
   [msg]
   (fn [rdr & _]
     (reader-error rdr msg)))
 
 (defn read-regex
+  "From a reader positioned at the start of a regex, return a java.util.regex.Pattern"
   [rdr ch]
   (let [sb (StringBuilder.)]
     (loop [ch (read-char rdr)]
